@@ -67,7 +67,7 @@ public class FlyPad : MonoBehaviour
     public void CenterPadUnderHead()
     {
         // Task 3.1 TODO
-        padTransform.position = new Vector3(headTransform.transform.position.x, padTransform.position.y, headTransform.transform.position.z); //w
+        padTransform.position = new Vector3(headTransform.transform.position.x, 0, headTransform.transform.position.z); //w
         padOrigin = padTransform.transform.position; //w
     }
 
@@ -92,50 +92,53 @@ public class FlyPad : MonoBehaviour
     private void PositionControl(Vector2 userPadPosition)
     {
         // Task 3.1 TODO 
-        
+
         Vector3 v3 = new Vector3(userPadPosition.x, 0, userPadPosition.y); //w
-        userPadPosition = v3; //w
+        //userPadPosition = v3; //w
         transform.position = padOrigin + (v3 * positionControlScaleFactor); //w
-       
-        //Vector3 N_inverse = Vector3 N_newV.Inverse();
-
-        //var matrix = transform.localToWorldMatrix;
-        //Matrix4x4 mat = Matrix4x4.TRS(N_newV, Vector3.zero, Vector3.zero);
-        //transform.position = mat.GetColumn(3);
-        //transform.rotation = mat.rotation;
-        //transform.localScale = mat.lossyScale;
-
-        //Quaternion rot = Quaternion.Euler(0, 0, 0);
-        //Matrix4x4 mat = Matrix4x4.TRS(N_newV, rot, Vector3.zero);
-        //transform.position = mat.GetColumn(3);
-        //Matrix4x4 inv = mat.inverse;
-        //Vector3 NN = new Vector3(-N_newV.x, -N_newV.y, -N_newV.z);
-        //transform.position = mat + inv;
-        
-        ///////////////////////////////////what if P_local is padOrigin? we need to check this variant too
-
-        // delta pos = Vt1 * delta t for both x and z
     }
 
     private void VelocityControl(Vector2 userPadPosition)
     {
         // Task 3.1 TODO
-         
-        Vector3 v3 = new Vector3(userPadPosition.x, 0, userPadPosition.y); //w
-        userPadPosition = v3; //w
-        Vector3 N_newV = padOrigin + v3 * maximumVelocity;
-        //transform.position = N_newV;
-        //transform.position = direction * maximumVelocity;
-        speed = Vector3.Distance(padOrigin, N_newV) / Time.deltaTime;
-        Debug.Log(speed);
-        transform.position = N_newV.normalized * speed;
-        //transform.position = (padOrigin + (v3.normalized * maximumVelocity)) / Time.deltaTime;
-        //userPadPosition * inputMagnitudeThreshold
+
+            Debug.Log("THIS IS OVER THE MAGNITUDE THRESHOLD");
+           
+
+            float sConstrain = maximumVelocity * CalculateScaledInputMagnitude(userPadPosition);
+
+            float distanceTraveled = userPadPosition.magnitude * Time.deltaTime;
+
+            Vector3 fVelocity = new Vector3(userPadPosition.normalized.x * distanceTraveled * sConstrain, 0, userPadPosition.normalized.y * distanceTraveled * sConstrain);
+
+            transform.Translate(fVelocity);
+
+            Debug.Log("the percentage of appleid Speed Factor is" + sConstrain);
+  
     }
 
     private void AccelerationControl(Vector2 userPadPosition)
     {
         // Task 3.1 (3.2 optional) TODO
+
+        float aConstrain = maximumAcceleration * CalculateScaledInputMagnitude(userPadPosition);
+
+        Vector2 padDirection = new Vector2();
+
+        padDirection.x = currentVelocity.x;
+        padDirection.y = currentVelocity.y;
+
+        currentVelocity.x = currentVelocity.x + (userPadPosition.x * aConstrain);
+        currentVelocity.y = currentVelocity.y + (userPadPosition.y * aConstrain);
+        
+        Debug.Log(currentVelocity.x + currentVelocity.y);
+
+
+        Vector3 fAceleration = new Vector3(transform.position.x + currentVelocity.x * Time.deltaTime, transform.position.y, transform.position.z + currentVelocity.y * Time.deltaTime);
+
+        transform.position = fAceleration;
+
+        //Debug.Log("the percentage of appleid Acceleration Factor is" + maximumAcceleration);
 
         // reverse acceleration is a breaking mechanism
     }

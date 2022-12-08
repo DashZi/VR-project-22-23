@@ -37,7 +37,7 @@ public class JumpingNavigation : MonoBehaviour
 
     private LineRenderer debugOffsetRenderer;
 
-    public LayerMask myLayerMask;
+    public LayerMask floorlayer;
 
     public float rayActivationThreshhold = 0.01f;
     public float jumpActivationThreshhold = 0.9f;
@@ -84,8 +84,32 @@ public class JumpingNavigation : MonoBehaviour
         }
 
         // Task 3.3 TODO
-        
-
+        //floorlayer = ~floorlayer;
+        if (jumpActionValue > rayActivationThreshhold && jumpActionValue < jumpActivationThreshhold)
+        {
+            previewHitpoint.SetActive(true);
+            if (Physics.Raycast(rightController.transform.position, rightController.transform.forward, out hit, floorlayer))
+            {
+                Vector3 raypos = hit.point;
+                previewHitpoint.transform.position = new Vector3 (raypos.x, 0, raypos.z);
+            }
+        }
+        else if(jumpActionValue > jumpActivationThreshhold && jumpActionValue < 1.0f)
+        {
+            previewHitpoint.SetActive(true);
+            if (Physics.Raycast(rightController.transform.position, rightController.transform.forward, out hit, floorlayer))
+            {
+                jumpingTargetPosition = hit.point;
+                previewAvatar.SetActive(true);
+                previewAvatar.transform.SetParent(xrUserCamera.transform);
+                previewAvatar.transform.position = new Vector3 (jumpingTargetPosition.x, xrUserCamera.transform.position.y, jumpingTargetPosition.z);
+            }
+        }
+        else
+        {
+            previewHitpoint.SetActive(false);
+            previewAvatar.SetActive(false);
+        }
 
         if (resetAction.action.WasPressedThisFrame())
         {
@@ -93,12 +117,10 @@ public class JumpingNavigation : MonoBehaviour
         }
     }
 
-
-
     private void PerformJump()
     {
         // Task 3.3 TODO
-        
+        //var H_local = Matrix4x4.TRS(xrUserCamera.transform.localPosition, Quaternion.Euler(0, xrUserCamera.transform.localRotation.eulerAngles.y, 0));
 
         jumpPerformed.Invoke();
     }
