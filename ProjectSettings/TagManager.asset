@@ -14,8 +14,8 @@ TagManager:
   - UI
   - mirrorlayer
   - floorlayer
-  - 
-  - 
+  - HandCollider
+  - Interactible
   - 
   - 
   - 
