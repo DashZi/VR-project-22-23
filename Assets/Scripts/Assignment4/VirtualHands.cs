@@ -23,6 +23,9 @@ public class VirtualHands : MonoBehaviour
     private GameObject rightGrabbedObject;
     private GameObject leftGrabbedObject;
 
+    //public float grabDistance = 0.5;
+    private bool isHoldingObj = false;
+
     private Matrix4x4 rightOffsetMat; // <-- Hint
     private Matrix4x4 leftOffsetMat; // <-- Hint
     
@@ -61,6 +64,7 @@ public class VirtualHands : MonoBehaviour
                 rightHandCollider.collidingObject != leftGrabbedObject)
             {
                 rightGrabbedObject = rightHandCollider.collidingObject;
+
             }
             else if (rightGrabbedObject != null)
             {
@@ -77,11 +81,49 @@ public class VirtualHands : MonoBehaviour
     public void ReparentingGrab()
     {
         // TODO: Excercise 4.2
+    //Right    
+        if (rightHandGrab.action.IsPressed()==true && leftGrabbedObject!=rightGrabbedObject)
+        {
+            if (rightGrabbedObject != null && rightHandCollider.isColliding)//* check if coliding is true
+            {
+               rightHandCollider.transform.SetParent(rightGrabbedObject.transform);// change or transform its parent to RH
+            }
+            else if (rightGrabbedObject != null)
+            {
+                rightGrabbedObject.transform.position = rightHandCollider.transform.position;
+                rightGrabbedObject.transform.rotation = rightHandCollider.transform.rotation;
+            }
+        }
+        else if (rightHandGrab.action.WasReleasedThisFrame())// or when i leave the obj the new parent is null
+        {
+            rightGrabbedObject = null;//parent becomes null and stays there
+        }
+    //Left    
+        if (leftHandGrab.action.IsPressed()==true && leftGrabbedObject!=rightGrabbedObject)
+        {
+            if (leftGrabbedObject != null && leftHandCollider.isColliding)//* check if coliding is true
+            {
+               leftHandCollider.transform.SetParent(leftGrabbedObject.transform);// change or transform its parent to LH
+            }
+            else if (rightGrabbedObject != null)
+            {
+                rightGrabbedObject.transform.position = rightHandCollider.transform.position;
+                rightGrabbedObject.transform.rotation = rightHandCollider.transform.rotation;
+            }
+        }
+        else if (leftHandGrab.action.WasReleasedThisFrame())// or when i leave the obj the new parent is null
+        {
+            leftGrabbedObject = null;//parent becomes null and stays there
+        }
+
+        //try to select a cube with rey
     }
 
     public void GrabCalculation()
     {
         // TODO: Excercise 4.2
+        
+
     }
 
     
