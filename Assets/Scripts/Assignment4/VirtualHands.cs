@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+//using UnityEngine.XR.Interaction.Toolkit;
 
 public class VirtualHands : MonoBehaviour
 {
@@ -23,24 +24,33 @@ public class VirtualHands : MonoBehaviour
     private GameObject rightGrabbedObject;
     private GameObject leftGrabbedObject;
 
-    //public float grabDistance = 0.5;
-    private bool isHoldingObj = false;
+    public Transform tmpParent;
+    //private XRController xr;
 
     private Matrix4x4 rightOffsetMat; // <-- Hint
     private Matrix4x4 leftOffsetMat; // <-- Hint
     
     // Hint: you can use these matrices to store your offsets for GrabCalculation()
-
+   
     #endregion
 
     #region MonoBehaviour Callbacks
 
+    //void Start()
+    //{
+//        xr = (XRController)GameObject.FindObjectOfType(typeof(XRController));
+   // }
+
+// void ActivateHaptic()
+    //{
+    //    xr.SendHapticImpulse(0.7f, 2f);
+   // }
     private void Update()
     {
         if (switchMode.action.WasPressedThisFrame())
             reparent = !reparent;
         
-        SnapGrab(); // comment out when implementing your solutions
+        //SnapGrab(); // comment out when implementing your solutions
         
         if (reparent)
         {
@@ -85,30 +95,51 @@ public class VirtualHands : MonoBehaviour
         {
             if (rightGrabbedObject == null && rightHandCollider.isColliding && rightHandCollider.collidingObject != leftGrabbedObject)//* check if coliding is true
             {
-               //rightHandCollider.transform.SetParent(rightGrabbedObject.transform);// change or transform its parent to RH
+               //rightHandCollider.transform.SetParent(rightGrabbedObject.transform);// change or transform its parent to LH
+               tmpParent = rightHandCollider.collidingObject.transform.parent.transform;
                rightGrabbedObject = rightHandCollider.collidingObject;
-               rightGrabbedObject.transform.SetParent(rightHandCollider.gameObject.transform, true);
+               //leftGrabbedObject.transform.SetParent(leftHandCollider.gameObject.transform, true);
+            //    Matrix4x4 NewMatrixO_1 = GetTransformationMatrix(rightHandCollider.gameObject.transform, true);
+              // ActivateHaptic();
+            //    rightGrabbedObject.transform.position = NewMatrixO_1.GetColumn(3);
+
+            }
+            else if (rightGrabbedObject != null)
+            {
+               rightGrabbedObject.transform.SetParent(rightHandCollider.transform.parent.transform.parent.transform);
             }
         }
         else if (rightHandGrab.action.WasReleasedThisFrame())// or when i leave the obj the new parent is null
         {
-            rightGrabbedObject.transform.SetParent(null);
+            rightGrabbedObject.transform.SetParent(tmpParent);
             rightGrabbedObject = null;//parent becomes null and stays there
+            tmpParent = null;
         }
+
     //Left    
         if (leftHandGrab.action.IsPressed())
         {
             if (leftGrabbedObject == null && leftHandCollider.isColliding && leftHandCollider.collidingObject != rightGrabbedObject)//* check if coliding is true
             {
-               //rightHandCollider.transform.SetParent(rightGrabbedObject.transform);// change or transform its parent to RH
+               //rightHandCollider.transform.SetParent(rightGrabbedObject.transform);// change or transform its parent to LH
+               tmpParent = leftHandCollider.collidingObject.transform.parent.transform;
                leftGrabbedObject = leftHandCollider.collidingObject;
-               leftGrabbedObject.transform.SetParent(leftHandCollider.gameObject.transform, true);
+               //leftGrabbedObject.transform.SetParent(leftHandCollider.gameObject.transform, true);
+               //Matrix4x4 NewMatrixO_1 = GetTransformationMatrix(leftHandCollider.gameObject.transform, true);
+               //ActivateHaptic();
+               //leftGrabbedObject.transform.position = NewMatrixO_1.GetColumn(3);
+
+            }
+            else if (leftGrabbedObject != null)
+            {
+               leftGrabbedObject.transform.SetParent(leftHandCollider.transform.parent.transform.parent.transform);
             }
         }
         else if (leftHandGrab.action.WasReleasedThisFrame())// or when i leave the obj the new parent is null
         {
-            leftGrabbedObject.transform.SetParent(null);
+            leftGrabbedObject.transform.SetParent(tmpParent);
             leftGrabbedObject = null;//parent becomes null and stays there
+            tmpParent = null;
         }
     }
 
@@ -122,6 +153,7 @@ public class VirtualHands : MonoBehaviour
             {
                //rightHandCollider.transform.SetParent(rightGrabbedObject.transform);// change or transform its parent to RH
                rightGrabbedObject = rightHandCollider.collidingObject;
+               //Matrix4x4 NewMatrixO_1 = NewMatrixO_1.Multiply(rightGrabbedObject, rightOffsetMat);
             }
             else if (rightGrabbedObject != null)
             {
@@ -132,9 +164,36 @@ public class VirtualHands : MonoBehaviour
         else if (rightHandGrab.action.WasReleasedThisFrame())
         {
             rightGrabbedObject = null;
-        }   
-    }
+        }
+    //Left
+        if (leftHandGrab.action.IsPressed())
+        {
+            if (leftGrabbedObject == null && leftHandCollider.isColliding && leftHandCollider.collidingObject != rightGrabbedObject)//* check if coliding is true
+            {
+                //rightHandCollider.transform.SetParent(rightGrabbedObject.transform);// change or transform its parent to LH
+                tmpParent = leftHandCollider.collidingObject.transform.parent.transform;
+                leftGrabbedObject = leftHandCollider.collidingObject;
+                //leftGrabbedObject.transform.SetParent(leftHandCollider.gameObject.transform, true);
+                //Matrix4x4 NewMatrixO_1 = GetTransformationMatrix(leftHandCollider.gameObject.transform, true);
+               
+                //leftGrabbedObject.transform.position = NewMatrixO_1.GetColumn(3);
+            }
+            else if (leftGrabbedObject != null)
+            {
+                leftGrabbedObject.transform.SetParent(leftHandCollider.transform.parent.transform.parent.transform);
+            }
+        }
+        else if (leftHandGrab.action.WasReleasedThisFrame())// or when i leave the obj the new parent is null
+        {
+            leftGrabbedObject.transform.SetParent(tmpParent);
+            leftGrabbedObject = null;//parent becomes null and stays there
+            tmpParent = null;
+        }
 
+    }
+    
+
+    
     
     /// <summary>
     /// Returns TRS-Matrix for t
