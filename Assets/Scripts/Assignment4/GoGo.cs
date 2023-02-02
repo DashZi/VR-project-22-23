@@ -24,6 +24,7 @@ public class GoGo : MonoBehaviour
     public HandCollider leftHandCollider;
 
     [Header("Parameters")] 
+    public float headOffset = 0.2f;
     public float maxDistance = 9f;
     public float activationOffset = 0.35f;
     public float maxReachDistance = 1f;
@@ -31,21 +32,12 @@ public class GoGo : MonoBehaviour
     private GameObject rightGrabbedObject;
     private GameObject leftGrabbedObject;
 
-    float coefficient = 9;
-    public Transform tmpParent;
     #endregion
 
     #region MonoBeaviour Callbacks
 
     private void Update()
     {
-
-        //----------------------------------------------------------
-
-
-
-        //----------------------------------------------------------
-
         UpdateHands();
         UpdateGrab();
     }
@@ -53,105 +45,91 @@ public class GoGo : MonoBehaviour
     #endregion
 
     #region Custom Methods
+
     public void UpdateHands()
     {
+        Vector3 adjustedHeadPosition = head.position;
+        adjustedHeadPosition.y -= headOffset;
+        
+        // right Hand
+        Vector3 headToRightHand = rightController.position - adjustedHeadPosition;
 
-        // TODO Excercise 4.3 
-        // hand savesent calculation
+        float rightHandDistance = headToRightHand.magnitude;
 
-        Vector3 rightDifference = rightController.position - (head.position - new Vector3(0.0f, 0.2f));
-        float rightHandMotorSpaceDistance = rightDifference.magnitude;
-        Vector3 rightHandDirection = rightDifference.normalized;
-
-        if (rightHandMotorSpaceDistance < activationOffset)
+        if (rightHandDistance > activationOffset)
         {
-            rightHandMesh.position = rightController.position;
+            float offsetFactor = Mathf.Clamp((rightHandDistance - activationOffset) / (maxReachDistance - activationOffset), 0, 1);
+            
+            float handOffset = maxDistance * Mathf.Pow(offsetFactor, 2);
+
+            rightHandMesh.position = rightController.position + headToRightHand.normalized * handOffset;
         }
         else
         {
-            float virtualDistanceFromRightController = coefficient * (float)Math.Pow((rightHandMotorSpaceDistance - activationOffset), 2);
-            virtualDistanceFromRightController *= 100.0f; //conversion to centieetres
-            rightHandMesh.position = rightController.position + rightHandDirection * virtualDistanceFromRightController;
+            rightHandMesh.transform.localPosition = Vector3.zero;
         }
+        
+        // left Hand
+        Vector3 headToLeftHand = leftController.position - adjustedHeadPosition;
 
-        Vector3 leftDifference = leftController.position - (head.position - new Vector3(0.0f, 0.2f));
-        float leftHandMotorSpaceDistance = leftDifference.magnitude;
-        Vector3 leftHandDirection = leftDifference.normalized;
+        float leftHandDistance = headToLeftHand.magnitude;
 
-        if (leftHandMotorSpaceDistance < activationOffset)
+        if (leftHandDistance > activationOffset)
         {
-            leftHandMesh.position = leftController.position;
+            float offsetFactor =
+                Mathf.Clamp((leftHandDistance - activationOffset) / (maxReachDistance - activationOffset), 0, 1);
+
+            float handOffset = maxDistance * Mathf.Pow(offsetFactor, 2);
+
+            leftHandMesh.position = leftController.position + headToLeftHand.normalized * handOffset;
         }
         else
         {
-            float virtualDistanceFromLeftController = coefficient * (float)Math.Pow((leftHandMotorSpaceDistance - activationOffset), 2);
-            virtualDistanceFromLeftController *= 100.0f; //conversion to centimetres
-            leftHandMesh.position = leftController.position + leftHandDirection * virtualDistanceFromLeftController;
+            leftHandMesh.transform.localPosition = Vector3.zero;
         }
     }
 
-    //public void ReparentingGrab()
     public void UpdateGrab()
     {
-        // TODO: Excercise 4.2
-        //Right    
-        if (rightHandGrab.action.IsPressed())
+        if (rightHandGrab.action.WasPressedThisFrame())
         {
-            if (rightGrabbedObject == null && rightHandCollider.isColliding && rightHandCollider.collidingObject != leftGrabbedObject)//* check if coliding is true
+            if (rightGrabbedObject == null && rightHandCollider.isColliding && rightHandCollider.collidingObject != leftGrabbedObject)
             {
-               //rightHandCollider.transform.SetParent(rightGrabbedObject.transform);// change or transform its parent to LH
-               tmpParent = rightHandCollider.collidingObject.transform.parent.transform;
-               rightGrabbedObject = rightHandCollider.collidingObject;
-               //leftGrabbedObject.transform.SetParent(leftHandCollider.gameObject.transform, true);
-            //    Matrix4x4 NewMatrixO_1 = GetTransformationMatrix(rightHandCollider.gameObject.transform, true);
-              // ActivateHaptic();
-            //    rightGrabbedObject.transform.position = NewMatrixO_1.GetColumn(3);
-
-            }
-            else if (rightGrabbedObject != null)
-            {
-               rightGrabbedObject.transform.SetParent(rightHandCollider.transform.parent.transform.parent.transform);
+                rightGrabbedObject = rightHandCollider.collidingObject;
+                rightGrabbedObject.transform.SetParent(rightHandCollider.transform, true);
+                rightGrabbedObject.GetComponent<MaterialHandler>().Grab(true);
             }
         }
-        else if (rightHandGrab.action.WasReleasedThisFrame())// or when i leave the obj the new parent is null
+        else if (rightHandGrab.action.WasReleasedThisFrame())
         {
-            rightGrabbedObject.transform.SetParent(tmpParent);
-            rightGrabbedObject = null;//parent becomes null and stays there
-            tmpParent = null;
-        }
-
-    //Left    
-        if (leftHandGrab.action.IsPressed())
-        {
-            if (leftGrabbedObject == null && leftHandCollider.isColliding && leftHandCollider.collidingObject != rightGrabbedObject)//* check if coliding is true
+            if (rightGrabbedObject != null)
             {
-               //rightHandCollider.transform.SetParent(rightGrabbedObject.transform);// change or transform its parent to LH
-               tmpParent = leftHandCollider.collidingObject.transform.parent.transform;
-               leftGrabbedObject = leftHandCollider.collidingObject;
-               //leftGrabbedObject.transform.SetParent(leftHandCollider.gameObject.transform, true);
-               //Matrix4x4 NewMatrixO_1 = GetTransformationMatrix(leftHandCollider.gameObject.transform, true);
-               //ActivateHaptic();
-               //leftGrabbedObject.transform.position = NewMatrixO_1.GetColumn(3);
-
-            }
-            else if (leftGrabbedObject != null)
-            {
-               leftGrabbedObject.transform.SetParent(leftHandCollider.transform.parent.transform.parent.transform);
+                rightGrabbedObject.GetComponent<MaterialHandler>().Grab(false);
+                rightGrabbedObject.transform.SetParent(null, true);
+                rightGrabbedObject = null;
             }
         }
-        else if (leftHandGrab.action.WasReleasedThisFrame())// or when i leave the obj the new parent is null
+
+        if (leftHandGrab.action.WasPressedThisFrame())
         {
-            leftGrabbedObject.transform.SetParent(tmpParent);
-            leftGrabbedObject = null;//parent becomes null and stays there
-            tmpParent = null;
+            if (leftGrabbedObject == null && leftHandCollider.isColliding &&
+                leftHandCollider.collidingObject != rightGrabbedObject)
+            {
+                leftGrabbedObject = leftHandCollider.collidingObject;
+                leftGrabbedObject.transform.SetParent(leftHandCollider.transform, true);
+                leftGrabbedObject.GetComponent<MaterialHandler>().Grab(true);
+            }
+        }
+        else if (leftHandGrab.action.WasReleasedThisFrame())
+        {
+            if (leftGrabbedObject != null)
+            {
+                leftGrabbedObject.GetComponent<MaterialHandler>().Grab(false);
+                leftGrabbedObject.transform.SetParent(null, true);
+                leftGrabbedObject = null;
+            }
         }
     }
-
-    /*public void UpdateGrab()
-    {
-        // TODO Excercise 4.3
-        // grab calculation
-    }*/
 
     #endregion
 }

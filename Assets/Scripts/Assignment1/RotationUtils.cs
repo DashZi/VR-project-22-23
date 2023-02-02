@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-/*ublic class RotationUtils
+public class RotationUtils
 {
     public static Vector3 ManualYRotation(Vector3 directionXZ, float degrees)
     {
@@ -29,4 +29,4 @@ using UnityEngine;
     {
         return Quaternion.AngleAxis(degrees, Vector3.up) * directionXZ;
     }
-}*/
+}
