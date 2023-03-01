@@ -754,6 +754,7 @@ MonoBehaviour:
       m_SingletonActionBindings: []
       m_Flags: 0
     m_Reference: {fileID: -6335301290564649149, guid: 21fa8b5b38dda864d8f8061dbcfd6b56, type: 3}
+  hand: {fileID: 0}
 --- !u!120 &5291947712013219675
 LineRenderer:
   m_ObjectHideFlags: 0
@@ -1352,6 +1353,7 @@ MonoBehaviour:
       m_SingletonActionBindings: []
       m_Flags: 0
     m_Reference: {fileID: -5533401741094387922, guid: 21fa8b5b38dda864d8f8061dbcfd6b56, type: 3}
+  hand: {fileID: 0}
 --- !u!120 &5672211284765024126
 LineRenderer:
   m_ObjectHideFlags: 0
