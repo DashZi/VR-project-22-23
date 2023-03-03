@@ -23,15 +23,18 @@ public class PointingRay : MonoBehaviourPun, IPunObservable
     public InputActionProperty rayActivation;
 
     private bool isHitting;
+
     private Vector3 receivedStartPos;
-    private Vector3 recievedFinPos;
+    private Vector3 receivedEndPos;
     private Color receivedColor;
     private bool receivedEnabled;
 
     public Transform hand;
+
     #endregion
 
     #region MonoBehaviour Callbacks
+
     private void Start()
     {
         InitializeRay();
@@ -44,9 +47,11 @@ public class PointingRay : MonoBehaviourPun, IPunObservable
             UpdateRay();
         }
     }
+
     #endregion
 
     #region Custom Methods
+
     private void InitializeRay()
     {
         lineRenderer = GetComponent<LineRenderer>();
@@ -65,8 +70,7 @@ public class PointingRay : MonoBehaviourPun, IPunObservable
     {
         if (photonView.IsMine)
         {
-            //Debug.Log(lineRenderer.enabled);
-
+            Debug.Log(lineRenderer.enabled);
             if (rayActivation.action.WasPressedThisFrame()) //toggle visibility
             {
                 lineRenderer.enabled = true;
@@ -88,12 +92,16 @@ public class PointingRay : MonoBehaviourPun, IPunObservable
                 lineRenderer.endColor = idleColor;
                 lineRenderer.SetPositions(new Vector3[] { hand.position, hand.position + hand.forward * idleLength });
             }
-        }    
+        }
+
+        
     }
+
     #endregion
 
     #region IPunObservable
-    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info) //for other users to be visible
+    
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
         if (photonView.IsMine && stream.IsWriting)
         {
@@ -105,15 +113,17 @@ public class PointingRay : MonoBehaviourPun, IPunObservable
         else if (stream.IsReading)
         {
             receivedStartPos = (Vector3)stream.ReceiveNext();
-            recievedFinPos= (Vector3)stream.ReceiveNext();
+            receivedEndPos= (Vector3)stream.ReceiveNext();
             receivedColor = (Vector4)stream.ReceiveNext();
             receivedEnabled = (bool)stream.ReceiveNext();
 
-            lineRenderer.SetPositions(new Vector3[] { receivedStartPos, recievedFinPos });
+            lineRenderer.SetPositions(new Vector3[] { receivedStartPos, receivedEndPos });
             lineRenderer.startColor = receivedColor;
             lineRenderer.endColor = receivedColor;
             lineRenderer.enabled = true;
         }
     }
+
     #endregion
+
 }
