@@ -12,9 +12,9 @@ public class VegetationGenerator : MonoBehaviour
 
     public int numObjects = 30;
 
-    public Vector3 vegetationBoundsMin = new Vector3(-30, 0, -30);
+    public Vector3 vegetationBoundsMin = new Vector3(-60, 0, -60);
 
-    public Vector3 vegetationBoundsMax = new Vector3(30, 0, 30);
+    public Vector3 vegetationBoundsMax = new Vector3(60, 0, 60);
 
     public bool reset = false;
 
