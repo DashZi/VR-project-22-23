@@ -5,8 +5,8 @@ using UnityEngine;
 public class MeltingPot : MonoBehaviour
 {
     public AudioSource AudioSource;
-    //public GameObject enemy;
     private bool activated = false;
+    
     private void OnTriggerEnter(Collider other)
     {
         Debug.Log("Im the pot, the ingredient is inside");
@@ -15,6 +15,7 @@ public class MeltingPot : MonoBehaviour
             if (!activated)
             {
                 activated = true;
+                ScoreManager.instance.AddPoint();
                 AudioSource.enabled = true;
             }
         }
