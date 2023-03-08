@@ -2,12 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class ScoreManager : MonoBehaviour
 {
     public static ScoreManager instance;
-    public Text ScoreText;
-    public Text HighscorecoreText;
+    public TextMeshProUGUI ScoreText;
+    public TextMeshProUGUI HighscorecoreText;
 
     int score = 0;
     int hightscore = 0;

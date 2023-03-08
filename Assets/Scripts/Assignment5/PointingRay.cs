@@ -15,26 +15,24 @@ public class PointingRay : MonoBehaviourPun, IPunObservable
 
     [Header("Ray parameter")] 
     public float rayWidth;
-    public float idleLength = 10f;
+    public float idleLength = 1f;
     public float maxDistance = 100f;
     public Color idleColor;
     public Color highlightColor;
     public LayerMask layersToInclude;
+    //public LayerMask layersToInclude = LayerMask.GetMask("Interactable");
     public InputActionProperty rayActivation;
 
     private bool isHitting;
-
     private Vector3 receivedStartPos;
-    private Vector3 receivedEndPos;
+    private Vector3 recievedFinPos;
     private Color receivedColor;
     private bool receivedEnabled;
 
     public Transform hand;
-
     #endregion
 
     #region MonoBehaviour Callbacks
-
     private void Start()
     {
         InitializeRay();
@@ -47,11 +45,9 @@ public class PointingRay : MonoBehaviourPun, IPunObservable
             UpdateRay();
         }
     }
-
     #endregion
 
     #region Custom Methods
-
     private void InitializeRay()
     {
         lineRenderer = GetComponent<LineRenderer>();
@@ -70,60 +66,67 @@ public class PointingRay : MonoBehaviourPun, IPunObservable
     {
         if (photonView.IsMine)
         {
-            Debug.Log(lineRenderer.enabled);
+            //Debug.Log(lineRenderer.enabled);
+
             if (rayActivation.action.WasPressedThisFrame()) //toggle visibility
             {
-                lineRenderer.enabled = true;
+                lineRenderer.enabled = !lineRenderer.enabled;
+            }
+            
+      
+                if(lineRenderer.enabled)
+                {
+                    Debug.Log("Line renderer has been Enabled");
+                    RaycastHit hit;
+
+                layersToInclude = LayerMask.GetMask("Interactable");
+
+                isHitting = Physics.Raycast(transform.position, transform.forward, out hit, maxDistance, layersToInclude);
+
+                    if (isHitting)
+                    {
+                        lineRenderer.SetPosition(0, transform.position);
+                        lineRenderer.SetPosition(1, hit.point);
+
+                        lineRenderer.startColor = highlightColor;
+                        lineRenderer.endColor = highlightColor;
+
+
+                        //lineRenderer.SetPositions(new Vector3[] { transform.position, hit.point });
+                        Debug.Log("isHitting = TRUE, Ray is hitting soemthing");
+                    }
+                    else
+                    {
+                        lineRenderer.SetPosition(0, this.transform.position);
+                        lineRenderer.SetPosition(1, this.transform.position + this.transform.forward * idleLength);
+
+
+                        lineRenderer.startColor = idleColor;
+                        lineRenderer.endColor = idleColor;
+                        //lineRenderer.SetPositions(new Vector3[] { transform.position, transform.position + transform.forward * idleLength });
+                        Debug.Log("isHitting = FALSE, Ray is NOT hitting anything");
+                    }
                 
+                //else { 
+                //Debug.Log("Line renderer has been Disabled");
+                //}
             }
-            RaycastHit hit;
-            isHitting = Physics.Raycast(hand.position, hand.forward, out hit, maxDistance, layersToInclude);
-
-            if (isHitting)
-            {
-                isHitting = true;
-                lineRenderer.startColor = highlightColor;
-                lineRenderer.endColor = highlightColor;
-                lineRenderer.SetPositions(new Vector3[] { hand.position, hit.point });
-            }
-            else
-            {
-                lineRenderer.startColor = idleColor;
-                lineRenderer.endColor = idleColor;
-                lineRenderer.SetPositions(new Vector3[] { hand.position, hand.position + hand.forward * idleLength });
-            }
-        }
-
-        
+        }    
     }
-
     #endregion
 
     #region IPunObservable
-    
-    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info) //for other users to be visible
     {
+        isHitting = Physics.Raycast(transform.position, transform.forward, layersToInclude);
         if (photonView.IsMine && stream.IsWriting)
         {
-            stream.SendNext(lineRenderer.GetPosition(0));
-            stream.SendNext(lineRenderer.GetPosition(1));
-            stream.SendNext((Vector4)lineRenderer.startColor);
-            stream.SendNext(lineRenderer.enabled);
+            stream.SendNext(isHitting);
         }
         else if (stream.IsReading)
         {
-            receivedStartPos = (Vector3)stream.ReceiveNext();
-            receivedEndPos= (Vector3)stream.ReceiveNext();
-            receivedColor = (Vector4)stream.ReceiveNext();
-            receivedEnabled = (bool)stream.ReceiveNext();
-
-            lineRenderer.SetPositions(new Vector3[] { receivedStartPos, receivedEndPos });
-            lineRenderer.startColor = receivedColor;
-            lineRenderer.endColor = receivedColor;
-            lineRenderer.enabled = true;
+            isHitting = (bool)stream.ReceiveNext();
         }
     }
-
     #endregion
-
 }

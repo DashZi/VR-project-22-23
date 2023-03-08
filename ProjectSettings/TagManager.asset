@@ -6,6 +6,7 @@ TagManager:
   tags:
   - House
   - ingredient
+  - text
   layers:
   - Default
   - TransparentFX
