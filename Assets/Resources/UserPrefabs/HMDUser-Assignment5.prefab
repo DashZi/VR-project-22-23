@@ -76,7 +76,7 @@ GameObject:
   - component: {fileID: 2211887979168329222}
   - component: {fileID: 8170510337599800571}
   - component: {fileID: 7132141789046281149}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: HandMesh-Left
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -819,7 +819,7 @@ MonoBehaviour:
   idleLength: 10
   maxDistance: 100
   idleColor: {r: 0.9528302, g: 0.5437807, b: 0, a: 1}
-  highlightColor: {r: 0, g: 0, b: 0, a: 0}
+  highlightColor: {r: 0, g: 0, b: 1, a: 1}
   layersToInclude:
     serializedVersion: 2
     m_Bits: 67108865
@@ -835,7 +835,7 @@ MonoBehaviour:
       m_SingletonActionBindings: []
       m_Flags: 0
     m_Reference: {fileID: -6335301290564649149, guid: 21fa8b5b38dda864d8f8061dbcfd6b56, type: 3}
-  hand: {fileID: 8667495327537265962}
+  hand: {fileID: 0}
 --- !u!120 &5291947712013219675
 LineRenderer:
   m_ObjectHideFlags: 0
@@ -1141,7 +1141,7 @@ GameObject:
   - component: {fileID: 5426022083231195529}
   - component: {fileID: 4620342177871566624}
   - component: {fileID: 2872881300322222742}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: HandMesh-Right
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1435,7 +1435,7 @@ MonoBehaviour:
   idleLength: 10
   maxDistance: 100
   idleColor: {r: 0.9528302, g: 0.5437807, b: 0, a: 1}
-  highlightColor: {r: 0, g: 0, b: 0, a: 0}
+  highlightColor: {r: 0, g: 0, b: 1, a: 1}
   layersToInclude:
     serializedVersion: 2
     m_Bits: 67108865
@@ -1451,7 +1451,7 @@ MonoBehaviour:
       m_SingletonActionBindings: []
       m_Flags: 0
     m_Reference: {fileID: -5533401741094387922, guid: 21fa8b5b38dda864d8f8061dbcfd6b56, type: 3}
-  hand: {fileID: 5864300832642198419}
+  hand: {fileID: 0}
 --- !u!120 &5672211284765024126
 LineRenderer:
   m_ObjectHideFlags: 0

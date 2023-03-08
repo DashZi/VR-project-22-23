@@ -30,16 +30,19 @@ public class LightSwitch : MonoBehaviourPunCallbacks
     private void Update()
     {
         if(lightToggleAction.action.WasPressedThisFrame())
-            ToggleLight();
+        {   
+            ToggleLight(lightOn);
+        }
+        //Debug.Log(lightOn);
     }
 
     #endregion
 
     #region Custom Methods
 
-    private void ToggleLight()
+    private void ToggleLight(bool lightOn)
     {
-        
+        base.photonView.RPC("ToggleLightRPC", RpcTarget.AllBuffered, lightOn);    
     }
 
     #endregion
@@ -56,9 +59,15 @@ public class LightSwitch : MonoBehaviourPunCallbacks
     #region RPCs
 
     [PunRPC]
-    public void ToggleLightRPC()
+    public void ToggleLightRPC(bool lights)
     {
         // use to toggle lights
+        lightOn = !lightOn;
+        lights = lightOn;
+        foreach (var light in lightSources)
+        {
+            light.intensity = lightOn ? 1f : 0f;
+        }
     }
 
     [PunRPC]

@@ -45,7 +45,6 @@ GameObject:
   - component: {fileID: 7145812296058933674}
   - component: {fileID: 5620097159907514567}
   - component: {fileID: 5620097159907514617}
-  - component: {fileID: 5620097159907514564}
   m_Layer: 0
   m_Name: Door
   m_TagString: Untagged
@@ -149,42 +148,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1.3826308, y: 0.12306504, z: 2.3121815}
   m_Center: {x: -0.6460866, y: 0.025042713, z: 1.1560907}
---- !u!59 &5620097159907514564
-HingeJoint:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5845587398265535077}
-  m_ConnectedBody: {fileID: 0}
-  m_ConnectedArticulationBody: {fileID: 0}
-  m_Anchor: {x: 0, y: 0.08657523, z: 2.67}
-  m_Axis: {x: 0, y: 0, z: 1}
-  m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: 0.6205522, y: 2.6836572, z: -0.037357137}
-  m_UseSpring: 1
-  m_Spring:
-    spring: 1
-    damper: 1
-    targetPosition: 0
-  m_UseMotor: 0
-  m_Motor:
-    targetVelocity: 0
-    force: 0
-    freeSpin: 0
-  m_UseLimits: 1
-  m_Limits:
-    min: 0
-    max: 0
-    bounciness: 0
-    bounceMinVelocity: 0.2
-    contactDistance: 0
-  m_BreakForce: Infinity
-  m_BreakTorque: Infinity
-  m_EnableCollision: 0
-  m_EnablePreprocessing: 1
-  m_MassScale: 1
-  m_ConnectedMassScale: 1
 --- !u!1 &8463517372868860429
 GameObject:
   m_ObjectHideFlags: 0

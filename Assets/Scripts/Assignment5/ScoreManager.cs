@@ -12,6 +12,7 @@ public class ScoreManager : MonoBehaviour
 
     int score = 0;
     int hightscore = 0;
+    public GameObject Door;
     
     private void Awake()
     {
@@ -31,5 +32,10 @@ public class ScoreManager : MonoBehaviour
         ScoreText.text = "POINTS: " + score.ToString();
         if (hightscore < score)
             PlayerPrefs.SetInt("highscore", score);
+    }
+    public void OpentheDoor()
+    {
+        if (score == 6)
+            Door.transform.position = new Vector3(Door.transform.position.x, 4, Door.transform.position.z);
     }
 }

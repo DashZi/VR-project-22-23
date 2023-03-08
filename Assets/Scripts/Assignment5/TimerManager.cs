@@ -26,7 +26,7 @@ public class TimerManager : MonoBehaviour
         fraction = ((int)guiT * 100) % 100;
         textT = string.Format("{0:00}:{1:00}", minutes, seconds, fraction);
 
-        if (minutes >=2)
+        if (minutes >= 2)
         {
             textfield.text = "GAME OVER";
         }

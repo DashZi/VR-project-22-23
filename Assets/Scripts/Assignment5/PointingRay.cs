@@ -15,12 +15,11 @@ public class PointingRay : MonoBehaviourPun, IPunObservable
 
     [Header("Ray parameter")] 
     public float rayWidth;
-    public float idleLength = 1f;
+    public float idleLength = 10f;
     public float maxDistance = 100f;
     public Color idleColor;
     public Color highlightColor;
     public LayerMask layersToInclude;
-    //public LayerMask layersToInclude = LayerMask.GetMask("Interactable");
     public InputActionProperty rayActivation;
 
     private bool isHitting;
@@ -82,11 +81,15 @@ public class PointingRay : MonoBehaviourPun, IPunObservable
                 layersToInclude = LayerMask.GetMask("Interactable");
 
                 isHitting = Physics.Raycast(transform.position, transform.forward, out hit, maxDistance, layersToInclude);
+                
 
                     if (isHitting)
                     {
+                        Debug.Log(hit.point);
+                        
                         lineRenderer.SetPosition(0, transform.position);
                         lineRenderer.SetPosition(1, hit.point);
+                        //lineRenderer.SetPosition(1, this.transform.position);
 
                         lineRenderer.startColor = highlightColor;
                         lineRenderer.endColor = highlightColor;
