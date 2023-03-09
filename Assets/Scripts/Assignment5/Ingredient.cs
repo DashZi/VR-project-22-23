@@ -7,6 +7,6 @@ public class Ingredient : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         Debug.Log("the obj is the ingredient");
-        //ScoreManager.instance.AddPoint();
     }
+    
 }

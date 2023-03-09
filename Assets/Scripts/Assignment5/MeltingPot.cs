@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class MeltingPot : MonoBehaviour
 {
+    public ScoreManager score;
     public AudioSource AudioSource;
     private bool activated = false;
     
@@ -15,7 +16,7 @@ public class MeltingPot : MonoBehaviour
             if (!activated)
             {
                 activated = true;
-                ScoreManager.instance.AddPoint();
+                score.AddPoint(1);
                 AudioSource.enabled = true;
             }
         }
