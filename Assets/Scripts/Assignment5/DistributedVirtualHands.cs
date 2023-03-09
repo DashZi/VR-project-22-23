@@ -54,10 +54,9 @@ public class DistributedVirtualHands : MonoBehaviourPun
                 {
                     // initial offset calculation
                     rightGrabbedObject = rightHandCollider.collidingObject;
-                    rightOffsetMat = GetTransformationMatrix(rightHandCollider.transform, true).inverse *
-                                     GetTransformationMatrix(rightGrabbedObject.transform, true);
-                
+                    rightOffsetMat = GetTransformationMatrix(rightHandCollider.transform, true).inverse * GetTransformationMatrix(rightGrabbedObject.transform, true);
                     rightGrabbedObject.GetComponent<MaterialHandler>().Grab(true);
+                    Debug.Log("Grab is Working");
                 }
             }
             else if (rightGrabbedObject != null)
@@ -74,6 +73,7 @@ public class DistributedVirtualHands : MonoBehaviourPun
             rightGrabbedObject.GetComponent<DistributedGrabbable>().Release();
             rightGrabbedObject = null;
             rightOffsetMat = Matrix4x4.identity;
+            Debug.Log("Grab is NOT Working");
         }
         
         if (leftHandGrab.action.IsPressed())
@@ -85,10 +85,9 @@ public class DistributedVirtualHands : MonoBehaviourPun
                 {
                     // initial offset calculation
                     leftGrabbedObject = leftHandCollider.collidingObject;
-                    leftOffsetMat = GetTransformationMatrix(leftHandCollider.transform, true).inverse *
-                                    GetTransformationMatrix(leftGrabbedObject.transform, true);
-                
+                    leftOffsetMat = GetTransformationMatrix(leftHandCollider.transform, true).inverse * GetTransformationMatrix(leftGrabbedObject.transform, true);
                     leftGrabbedObject.GetComponent<MaterialHandler>().Grab(true);
+                    Debug.Log("Grab is Working");
                 }
             }
             else if (leftGrabbedObject != null)
@@ -105,6 +104,7 @@ public class DistributedVirtualHands : MonoBehaviourPun
             leftGrabbedObject.GetComponent<DistributedGrabbable>().Release();
             leftGrabbedObject = null;
             leftOffsetMat = Matrix4x4.identity;
+            Debug.Log("Grab is NOT Working");
         }
     }
 

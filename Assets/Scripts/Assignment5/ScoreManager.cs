@@ -23,7 +23,7 @@ public class ScoreManager : MonoBehaviour
 
     public void Updatescore()
     {
-        Debug.Log(ScoreText.gameObject.name);
+        //Debug.Log(ScoreText.gameObject.name);
         ScoreText.text = "Points: " + score;
     }
 

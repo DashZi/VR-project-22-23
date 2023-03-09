@@ -76,7 +76,7 @@ GameObject:
   - component: {fileID: 2211887979168329222}
   - component: {fileID: 8170510337599800571}
   - component: {fileID: 7132141789046281149}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: HandMesh-Left
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -372,7 +372,7 @@ MonoBehaviour:
   m_SynchronizePosition: 1
   m_SynchronizeRotation: 1
   m_SynchronizeScale: 0
-  m_UseLocal: 1
+  m_UseLocal: 0
 --- !u!1 &2562906563487445920
 GameObject:
   m_ObjectHideFlags: 0
@@ -388,7 +388,6 @@ GameObject:
   - component: {fileID: 7549324874673099776}
   - component: {fileID: 8556233130368534756}
   - component: {fileID: 5897937208143209645}
-  - component: {fileID: 8033555990864971698}
   m_Layer: 0
   m_Name: HMDUser-Assignment5
   m_TagString: Untagged
@@ -616,7 +615,6 @@ MonoBehaviour:
   observableSearch: 2
   ObservedComponents:
   - {fileID: 9183621203041814426}
-  - {fileID: 8033555990864971698}
   - {fileID: 8994538496790150084}
   - {fileID: 1996069564581125124}
   - {fileID: 2003175186618393374}
@@ -625,39 +623,6 @@ MonoBehaviour:
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
---- !u!114 &8033555990864971698
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2562906563487445920}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8efc6b1d64977384eb3405357896c656, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_PositionModel:
-    SynchronizeEnabled: 1
-    TeleportEnabled: 1
-    TeleportIfDistanceGreaterThan: 3
-    InterpolateOption: 2
-    InterpolateMoveTowardsSpeed: 1
-    InterpolateLerpSpeed: 1
-    ExtrapolateOption: 0
-    ExtrapolateSpeed: 1
-    ExtrapolateIncludingRoundTripTime: 1
-    ExtrapolateNumberOfStoredPositions: 1
-  m_RotationModel:
-    SynchronizeEnabled: 0
-    InterpolateOption: 1
-    InterpolateRotateTowardsSpeed: 180
-    InterpolateLerpSpeed: 5
-  m_ScaleModel:
-    SynchronizeEnabled: 0
-    InterpolateOption: 0
-    InterpolateMoveTowardsSpeed: 1
-    InterpolateLerpSpeed: 0
 --- !u!1 &3665647903447584060
 GameObject:
   m_ObjectHideFlags: 0
@@ -982,7 +947,7 @@ MonoBehaviour:
   m_SynchronizePosition: 1
   m_SynchronizeRotation: 1
   m_SynchronizeScale: 0
-  m_UseLocal: 1
+  m_UseLocal: 0
 --- !u!1 &5279169358687850071
 GameObject:
   m_ObjectHideFlags: 0
@@ -1141,7 +1106,7 @@ GameObject:
   - component: {fileID: 5426022083231195529}
   - component: {fileID: 4620342177871566624}
   - component: {fileID: 2872881300322222742}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: HandMesh-Right
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1706,7 +1671,7 @@ MonoBehaviour:
   m_SynchronizePosition: 1
   m_SynchronizeRotation: 1
   m_SynchronizeScale: 0
-  m_UseLocal: 1
+  m_UseLocal: 0
 --- !u!1 &8528029550209610418
 GameObject:
   m_ObjectHideFlags: 0

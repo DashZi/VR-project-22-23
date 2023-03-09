@@ -16,7 +16,7 @@ public class PointingRay : MonoBehaviourPun, IPunObservable
     [Header("Ray parameter")] 
     public float rayWidth;
     public float idleLength = 10f;
-    public float maxDistance = 100f;
+    public float maxDistance = 50f;
     public Color idleColor;
     public Color highlightColor;
     public LayerMask layersToInclude;

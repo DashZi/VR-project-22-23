@@ -14,7 +14,7 @@ public class LightSwitch : MonoBehaviourPunCallbacks
     public InputActionProperty lightToggleAction;
 
     private bool lightOn = true;
-    
+
     #endregion
 
     #region MonoBehaviour Callbacks
@@ -29,11 +29,10 @@ public class LightSwitch : MonoBehaviourPunCallbacks
 
     private void Update()
     {
-        if(lightToggleAction.action.WasPressedThisFrame())
-        {   
+        if (lightToggleAction.action.WasPressedThisFrame())
+        {
             ToggleLight(lightOn);
         }
-        //Debug.Log(lightOn);
     }
 
     #endregion
@@ -42,7 +41,7 @@ public class LightSwitch : MonoBehaviourPunCallbacks
 
     private void ToggleLight(bool lightOn)
     {
-        base.photonView.RPC("ToggleLightRPC", RpcTarget.AllBuffered, lightOn);    
+        base.photonView.RPC("ToggleLightRPC", RpcTarget.AllBuffered, lightOn);
     }
 
     #endregion
@@ -51,7 +50,7 @@ public class LightSwitch : MonoBehaviourPunCallbacks
 
     public override void OnPlayerEnteredRoom(Player newPlayer)
     {
-        
+
     }
 
     #endregion
@@ -74,6 +73,7 @@ public class LightSwitch : MonoBehaviourPunCallbacks
     public void SendStateRPC(bool lightOn)
     {
         // use to inform late joined users
+
     }
 
     #endregion
