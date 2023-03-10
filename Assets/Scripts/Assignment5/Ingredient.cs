@@ -49,14 +49,14 @@ public class Ingredient : MonoBehaviour
     {
         originalPos = new Vector3(ihgredient.transform.position.x, ihgredient.transform.position.y, ihgredient.transform.position.z);
         //originalRot = new Vector3(ihgredient.transform.rotation.x, ihgredient.transform.rotation.y, ihgredient.transform.rotation.z);
-        //alternatively, just: originalPos = ihgredient.transform.position;
- 
     }
+
     private void OnTriggerEnter(Collider other)
     {
         Debug.Log("the obj is the ingredient");
         if(other.gameObject.tag == "MagicPot")
         {
+            new WaitForSeconds(420);
             ihgredient.transform.position = originalPos;
             //ihgredient.transform.rotation = originalRot;
         }
